@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
+    <script type="text/javascript" src="{% static "js/jquery-3.3.1.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    <meta charset="UTF-8">
+    <title>{{ blog.title }}</title>
+    <style>
+        .blog {
+            padding: 20px 0px;
+        }
+        .blog .info span {
+            padding-right: 10px;
+        }
+        .blog .summary {
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+     {# 1-导航条 #}
+    <div class="navbar navbar-inverse navbar-static-top">
+		<div class="container">
+
+			<!-- 定义logo和切换小图标   -->
+			<div class="navbar-header">
+
+				<button class="navbar-toggle" data-toggle="collapse" data-target="#mymenu">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<a href="#" class="navbar-brand">帅扎天的博客</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="mymenu">
+
+				<!-- 定义菜单   -->
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="{% url 'blog_test:blogs' %}">首页</a></li>
+					<li><a href="{% url 'blog_test:chat' %}">聊天页面</a></li>
+				</ul>
+
+				<!-- 定义菜单里面的表单   -->
+				<form class="navbar-form navbar-right">
+					<div class="form-group">
+						<div class="input-group">
+							<input type="text" name="" class="form-control">
+							<span class="input-group-btn">
+								<button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+							</span>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+<div class="header">
+    <span><a href="{% url 'blog_test:blog_get_detail' blog.id %}">{{ blog.title }}</a></span>
+</div>
+
+<div class="content">
+    <div class="blog">
+        <div class="title">
+            <a href="#"><h2>{{ blog.title }}</h2></a>
+        </div>
+        <div class="info">
+            <span class="category" style="color: #ff9900;">{{ blog.category.name }}</span>
+            <span class="author" style="color: #4a86e8">{{ blog.author }}</span>
+            <span class="created" style="color: #6aa84f">{{ blog.created|date:"Y-m-d H:i" }}</span>
+        </div>
+        <div class="summary">
+            {{ blog.content }}
+        </div>
+    </div>
+    <div class="comment">
+        <div class="comments-display" style="padding-top: 20px;">
+            <h3>评论</h3>
+            {% for comment in comments %}
+                <div class="comment-field" style="padding-top: 10px;">
+                    {{ comment.name }} 说: {{ comment.content }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="comment-post" style="padding-top: 20px;">
+            <h3>提交评论</h3>
+            <form action="{% url 'blog_test:blog_get_detail' blog.id %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="input-field" style="padding-top: 10px">
+                        {{ field.label }}: {{ field }}
+                    </div>
+                    <div class="error" style="color: red;">
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                <button type="submit" style="margin-top: 10px">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

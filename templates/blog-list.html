@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>My Blogs</title>
+</head>
+ <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
+    <script type="text/javascript" src="{% static "js/jquery-3.3.1.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+<style>
+    .all-block{
+        text-align: center;
+    }
+    .left-block{
+        width: 960px;
+        height: 800px;
+        float: left;
+        border: #555555 solid 1px;
+        margin-left: 80px;
+    }
+    .right-block{
+        width: 360px;
+        height: 800px;
+        float: right;
+        border: #555555 solid 1px;
+        margin-right: 80px;
+    }
+</style>
+<body>
+<div class="header">
+</div>
+
+     {# 1-导航条 #}
+    <div class="navbar navbar-inverse navbar-static-top">
+		<div class="container">
+
+			<!-- 定义logo和切换小图标   -->
+			<div class="navbar-header">
+
+				<button class="navbar-toggle" data-toggle="collapse" data-target="#mymenu">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<a href="#" class="navbar-brand">帅扎天的博客</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="mymenu">
+
+				<!-- 定义菜单   -->
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="{% url 'blog_test:blogs' %}">首页</a></li>
+					<li><a href="{% url 'blog_test:chat' %}">聊天页面</a></li>
+				</ul>
+
+				<!-- 定义菜单里面的表单   -->
+				<form class="navbar-form navbar-right">
+					<div class="form-group">
+						<div class="input-group">
+							<input type="text" name="" class="form-control">
+							<span class="input-group-btn">
+								<button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+							</span>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+    <div class="all-block">
+        <div class="left-block">
+        {% for blog in blogs %}
+            <div align="center" class="blog">
+                <div class="title">
+                    <a href="{% url 'blog_test:blog_get_detail' blog.id %}"><h2>{{ blog.title }}</h2></a>
+                </div>
+            <div class="info">
+                <span class="catagory" style="color: #ff9900;">{{ blog.catagory.name }}</span>
+                <span class="author" style="color: #4a86e8;">{{ blog.author }}</span>
+                <span class="created" style="color: #6aa84e;">{{ blog.created |date:"Y-m-d H:i" }}</span>
+            </div>
+            <div class="summary">
+                {{ blog.content | truncatechars:100 }}
+            </div>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="right-block">
+
+        </div>
+    </div>
+</body>
+</html>
